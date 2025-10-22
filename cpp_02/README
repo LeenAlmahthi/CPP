@@ -1,0 +1,292 @@
+# C++ Module 02
+
+## 🎯 What You'll Actually Learn
+
+**Operator overloading** and **Orthodox Canonical Form** - making your classes behave like built-in types and ensuring they're properly copyable and destroyable.
+
+## 📚 Core Concepts
+
+### 1. Orthodox Canonical Form (OCF)
+
+Every class MUST have these 4 functions (from Module 02 onwards):
+
+```
+THE BIG FOUR
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. Default Constructor    → Creates empty object
+2. Copy Constructor       → Creates copy from another object
+3. Copy Assignment (=)    → Assigns one object to another
+4. Destructor            → Cleans up when object dies
+```
+
+**Why?** These define how your class is created, copied, and destroyed. Without them, the compiler generates versions that might not work correctly (shallow copies, memory leaks, etc.).
+
+### 2. Fixed-Point Numbers
+
+Instead of integers (whole numbers) or floats (imprecise decimals), fixed-point numbers offer:
+
+```
+INTEGER              FLOAT               FIXED-POINT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Fast                 Slow                Medium speed
+Exact                Imprecise           Exact in range
+No decimals          Full range          Limited decimals
+5, 10, 42            3.14159...          42.42 (stored as 10860)
+```
+
+**Real use:** Graphics, audio processing, embedded systems where you need decimals but can't afford float imprecision.
+
+**How it works:** Store 42.42 as integer 10860, with 8 fractional bits
+- 42.42 × 2⁸ = 42.42 × 256 = 10860
+- To get back: 10860 ÷ 256 = 42.42
+
+### 3. Operator Overloading
+
+Make your class work with +, -, *, /, ==, <<, etc.
+
+```
+BEFORE                           AFTER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+a.add(b)                        a + b
+a.isEqual(b)                    a == b
+a.multiply(b)                   a * b
+std::cout << a.toFloat()        std::cout << a
+```
+
+**Benefit:** Your custom types feel natural and intuitive, like built-in types.
+
+## 📋 Exercise Breakdown
+
+### Ex00: Orthodox Canonical Form Basics
+**Focus:** Implement the 4 required functions
+
+Create Fixed class with:
+- Private integer (stores fixed-point value)
+- Private static const for fractional bits (always 8)
+- Default constructor, copy constructor, assignment operator, destructor
+- getRawBits() and setRawBits() functions
+
+**Learning:** Understanding OCF structure and constructor/destructor flow
+
+### Ex01: Useful Fixed-Point Class
+**Focus:** Conversions and stream insertion
+
+Add constructors that accept:
+- Integer → converts to fixed-point
+- Float → converts to fixed-point
+
+Add conversion functions:
+- toInt() → back to integer
+- toFloat() → back to float
+
+Overload << operator for easy printing
+
+**Learning:** Type conversion and making classes printable
+
+### Ex02: Full Operator Overloading
+**Focus:** Making class fully functional
+
+Implement operators:
+- Comparison: >, <, >=, <=, ==, !=
+- Arithmetic: +, -, *, /
+- Increment/Decrement: ++a, a++, --a, a--
+- Static functions: min(), max()
+
+**Learning:** Complete operator overloading, understanding pre/post increment
+
+### Ex03: Binary Space Partitioning (BONUS)
+**Focus:** Practical application
+
+Create Point class (x, y coordinates using Fixed)
+Implement BSP function to check if point is inside triangle
+
+**Learning:** Using your Fixed class in real geometry calculations
+
+## 💡 Practical Guidelines
+
+### Orthodox Canonical Form Checklist
+
+For EVERY class (unless told otherwise):
+
+```
+Required Functions:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✓ ClassName();                    // Default constructor
+✓ ClassName(const ClassName& src); // Copy constructor  
+✓ ClassName& operator=(const ClassName& rhs); // Assignment
+✓ ~ClassName();                   // Destructor
+```
+
+### Operator Overloading Rules
+
+**Comparison operators (==, !=, <, >, <=, >=)**
+- Return bool
+- Usually const member functions
+- Compare internal values
+
+**Arithmetic operators (+, -, *, /)**
+- Return new object
+- Don't modify originals
+- Watch for division by zero
+
+**Increment/Decrement (++, --)**
+- Pre-increment (++a): returns reference, increments first
+- Post-increment (a++): returns copy, increments after
+- Same for decrement
+
+**Stream insertion (<<)**
+- Must be non-member function
+- Returns stream reference for chaining
+- Accesses class through public functions
+
+### Fixed-Point Conversion Formula
+
+```
+Storing:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+float_value × 2^fractional_bits = stored_integer
+
+Retrieving:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+stored_integer ÷ 2^fractional_bits = float_value
+
+Example (8 fractional bits):
+42.42 × 256 = 10860 (stored)
+10860 ÷ 256 = 42.42 (retrieved)
+```
+
+## ⚠️ Common Mistakes
+
+**Forgetting OCF Functions**
+- Missing any of the 4 required functions = incomplete class
+- Compiler generates default versions that might not work correctly
+
+**Shallow vs Deep Copy**
+- Shallow: copies pointer addresses (both point to same memory)
+- Deep: copies actual data (separate memory)
+- For simple classes, shallow is fine; for dynamic memory, need deep
+
+**Assignment vs Copy Constructor**
+- Copy constructor: creates new object from existing
+- Assignment operator: overwrites existing object with another
+- Assignment must handle self-assignment (a = a)
+
+**Post-increment Return Value**
+- Must return copy of old value, not reference
+- Pre-increment returns reference for efficiency
+
+**Const Correctness**
+- Comparison operators should be const
+- Functions that don't modify should be const
+- const objects can only call const functions
+
+**Fixed-Point Precision**
+- More fractional bits = more precision but smaller range
+- 8 bits = 256 divisions between integers
+- Smallest epsilon = 1/256 = 0.00390625
+
+## 🔧 Tools & Commands
+
+```bash
+# Compile
+make
+
+# Check memory
+valgrind ./program
+
+# Test with different values
+./program
+```
+
+## ✅ Pre-Submission Checklist
+
+- [ ] All classes in Orthodox Canonical Form
+- [ ] Header (.hpp) and implementation (.cpp) separated
+- [ ] Include guards in all headers
+- [ ] No function implementations in headers (except templates)
+- [ ] All 4 OCF functions implemented
+- [ ] Copy constructor performs deep copy if needed
+- [ ] Assignment operator handles self-assignment
+- [ ] Destructor cleans up resources
+- [ ] Operators work correctly (test edge cases)
+- [ ] No memory leaks
+- [ ] Compiles with -Wall -Wextra -Werror -std=c++98
+
+## 📊 Concept Map
+
+```
+Orthodox Canonical Form
+        ↓
+Makes classes properly copyable
+        ↓
+Enables safe use in containers, parameters, returns
+        ↓
+Foundation for resource management (RAII)
+
+
+Operator Overloading
+        ↓
+Makes custom types intuitive
+        ↓
+Enables natural syntax (a + b instead of a.add(b))
+        ↓
+Classes behave like built-in types
+
+
+Fixed-Point Numbers
+        ↓
+Balance between int and float
+        ↓
+Exact decimal representation
+        ↓
+Used in performance-critical applications
+```
+
+## 🎓 Real-World Benefits
+
+**Orthodox Canonical Form:**
+- Foundation for all professional C++ classes
+- Prevents memory leaks and undefined behavior
+- Makes objects safe to copy and assign
+- Required for STL container usage
+
+**Operator Overloading:**
+- Cleaner, more readable code
+- Makes custom types feel native
+- Standard in mathematical/geometric libraries
+- Expected by generic programming (templates)
+
+**Fixed-Point:**
+- Game engines (position, physics)
+- Audio processing (precise timing)
+- Embedded systems (no float hardware)
+- Financial calculations (exact decimals)
+
+## 🚀 Success Strategy
+
+1. **Master OCF first** - These 4 functions are critical for all future modules
+2. **Understand deep vs shallow** - Know when you need deep copies
+3. **Test operators thoroughly** - Edge cases: zero, negatives, self-operations
+4. **Think about const** - What should and shouldn't modify the object?
+5. **Debug with print statements** - See constructor/destructor calls
+6. **Use epsilon correctly** - Smallest representable value is 1/256
+
+## 🎯 The Big Picture
+
+**Before Module 02:**  
+"Classes are just structs with functions"
+
+**After Module 02:**  
+"Classes are full-fledged types with proper lifecycle management and natural operator syntax"
+
+This module teaches you to create **production-quality classes** that:
+- Copy safely
+- Clean up properly
+- Behave intuitively
+- Integrate naturally with C++ idioms
+
+**Master OCF = Master C++ class design**
+
+---
+
+**Remember:** If you can't copy it, assign it, and destroy it properly, you can't use it safely.

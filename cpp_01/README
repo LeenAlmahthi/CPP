@@ -1,0 +1,135 @@
+# C++ Module 01
+
+## 🎯 What You'll Actually Learn
+
+Memory management fundamentals - when objects live, when they die, and who's responsible for cleanup.
+
+## 📚 Core Concepts
+
+### 1. Stack vs Heap Memory
+
+```
+STACK                          HEAP
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Automatic cleanup             Manual cleanup (delete)
+Fast allocation               Slower allocation
+Limited size                  Large size available
+Dies at end of scope          Lives until you delete it
+Good for: temporary data      Good for: persistent data
+```
+
+**Decision:** If it needs to outlive the function → Heap. Otherwise → Stack.
+
+### 2. References vs Pointers
+
+```
+POINTER (*)                   REFERENCE (&)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Can be NULL                   Must always exist
+Can be reassigned             Cannot be reassigned
+Needs * to access value       Direct access
+Optional relationship         Required relationship
+```
+
+**Decision Tree:**
+```
+Can it be NULL/optional?
+├─ YES → Use Pointer
+└─ NO  → Use Reference
+
+Need to change what it points to?
+├─ YES → Use Pointer
+└─ NO  → Use Reference
+```
+
+### 3. Pointer-to-Member Functions
+
+Instead of writing endless if/else statements, store function addresses in an array and call them by index. Makes code cleaner and more maintainable.
+
+## 📋 Exercise Breakdown
+
+| Exercise | Focus | Key Learning |
+|----------|-------|--------------|
+| **Ex00: Zombies** | Stack vs Heap | When to allocate where |
+| **Ex01: Horde** | Array allocation | Managing multiple objects efficiently |
+| **Ex02: Brain** | References intro | Understanding memory addresses |
+| **Ex03: Violence** | Design choice | Reference for required, pointer for optional |
+| **Ex04: Sed replacement** | File I/O | Reading, modifying, writing files |
+| **Ex05: Harl** | Function pointers | Eliminating if/else chains |
+| **Ex06: Filter** | Switch statement | Multi-level filtering logic |
+
+## 💡 Practical Guidelines
+
+### Memory Management Rules
+
+**Always pair operations:**
+- `new` → `delete`
+- `new[]` → `delete[]`
+
+**Choose allocation wisely:**
+- Temporary object in function → Stack
+- Object needs to outlive function → Heap
+- Size unknown at compile time → Heap
+
+### When to Use What
+
+**Use Reference when:**
+- Function parameter (avoid copying)
+- Class member that must always exist
+- Never needs to be NULL
+- Won't change what it refers to
+
+**Use Pointer when:**
+- Class member that's optional
+- Needs to be reassigned to different objects
+- Can be NULL
+- Working with dynamic arrays
+
+### Design Example: HumanA vs HumanB
+
+**HumanA:** Always armed → Weapon as reference (must exist)  
+**HumanB:** Might be unarmed → Weapon as pointer (can be NULL)
+
+## ⚠️ Common Mistakes
+
+**Memory Leaks**
+- Allocating with `new` but forgetting `delete`
+- Using `delete` instead of `delete[]` for arrays
+
+**Invalid Access**
+- Using pointers after deletion (dangling pointer)
+- Dereferencing NULL pointers
+- Accessing out-of-scope stack objects
+
+**Reference Errors**
+- Not initializing references at creation
+- Trying to reassign references (changes value, not binding)
+
+**Wrong Delete Type**
+- `delete` for arrays instead of `delete[]`
+- Causes undefined behavior and memory corruption
+
+## 🔧 Tools & Commands
+
+```bash
+# Compile with strict flags
+make
+
+# Check for memory leaks
+valgrind --leak-check=full ./program
+
+# Required compilation
+c++ -Wall -Wextra -Werror -std=c++98
+```
+
+## 📊 Real-World Benefits
+
+**Stack vs Heap:** Foundation for RAII and smart pointers in modern C++
+
+**References:** Safer than pointers, prevents null-related bugs
+
+**Proper Memory Management:** Prevents leaks and crashes in production
+
+**Function Pointers:** Basis for callbacks, event systems, polymorphism
+
+**Design Decisions:** Learning to model relationships correctly
