@@ -273,12 +273,6 @@ Used in performance-critical applications
 
 ## 🎯 The Big Picture
 
-**Before Module 02:**  
-"Classes are just structs with functions"
-
-**After Module 02:**  
-"Classes are full-fledged types with proper lifecycle management and natural operator syntax"
-
 This module teaches you to create **production-quality classes** that:
 - Copy safely
 - Clean up properly
