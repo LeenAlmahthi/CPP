@@ -12,12 +12,12 @@ FragTrap::FragTrap(std::string n) :ClapTrap(n){
     Hit_points = 100;
     Energy_points = 100;
     Attack_damage = 30;
-    std::cout << "[FragTrap copy constructor Created] " << name << "\n";
+    std::cout << "[FragTrap Parameterized constructor Created] " << name << "\n";
 }
 
 FragTrap::FragTrap(FragTrap const &tmp) :ClapTrap(tmp){
     *this = tmp; // this will call operator=
-    std::cout << "[FragTrap Copy assignment  Constructor] " << name << "\n";
+    std::cout << "[FragTrap Copy Constructor Created] " << name << "\n";
 }
 
 FragTrap::~FragTrap(){
@@ -33,7 +33,6 @@ FragTrap& FragTrap::operator=(const FragTrap &tmp){
     }
     return (*this);
 }
-
 void FragTrap::highFivesGuys(){
 
     if (this->Energy_points <= 0 || this->Hit_points <= 0)

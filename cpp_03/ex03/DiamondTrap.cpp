@@ -7,22 +7,21 @@ DiamondTrap::DiamondTrap() : ClapTrap(), FragTrap(), ScavTrap(){
     Hit_points = 100;
     Energy_points = 50;
     Attack_damage = 30;
-    std::cout << Hit_points << " " << Energy_points << " " << Attack_damage << std::endl
     std::cout << "[DiamondTrap Default constructor Created]\n";
 }
 
 DiamondTrap::DiamondTrap(std::string name) : ClapTrap(name), FragTrap(name), ScavTrap(name){
 	this->name = name;
     ClapTrap::name = name + "_clap_name";
-    Hit_points = FragTrap::Hit_points;
-    Energy_points = ScavTrap::Energy_points;
-    Attack_damage = FragTrap::Attack_damage;
-    std::cout << "[DiamondTrap copy constructor Created] " << name << "\n";
+    Hit_points = 100;
+    Energy_points = 50;
+    Attack_damage = 30;
+    std::cout << "[DiamondTrap Parameterized constructor Created]" << name << "\n";
 }
 
 DiamondTrap::DiamondTrap(DiamondTrap const &tmp) : ClapTrap(tmp), FragTrap(tmp), ScavTrap(tmp){
     *this = tmp; // this will call operator=
-    std::cout << "[DiamondTrap Copy assignment  Constructor] " << name << "\n";
+    std::cout << "[DiamondTrap Copy Constructor created] " << name << "\n";
 }
 
 DiamondTrap::~DiamondTrap(){

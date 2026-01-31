@@ -9,9 +9,6 @@ class ClapTrap{
 		int  Hit_points;
 		int Energy_points;
 		int Attack_damage;
-		static const int _Hit_points = 10;
-		static const int _Energy_points = 10;
-		static const int _Attack_damage = 0;
 	public:
 		ClapTrap();
 		ClapTrap(std::string name);
